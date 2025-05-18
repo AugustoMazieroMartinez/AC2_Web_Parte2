@@ -29,7 +29,6 @@ public class AgendaServiceImpl implements AgendaService {
 
     @Override
     public Agenda save(Agenda agenda) {
-        // Verifica se o professor já está ocupado nesse período
         List<Agenda> conflitos = agendaRepository.findProfessorLivre(
             agenda.getProfessor().getId(),
             agenda.getDataInicio(),
@@ -48,13 +47,11 @@ public class AgendaServiceImpl implements AgendaService {
 
     @Override
     public Agenda putById(Integer id, Agenda agenda) {
-        // Verifica se o professor já está ocupado nesse período, exceto pela própria agenda
         List<Agenda> conflitos = agendaRepository.findProfessorLivre(
             agenda.getProfessor().getId(),
             agenda.getDataInicio(),
             agenda.getDataFim()
         );
-        // Remove o próprio agendamento da lista de conflitos (caso esteja editando)
         conflitos.removeIf(a -> a.getId() == id);
         if (!conflitos.isEmpty()) {
             throw new IllegalArgumentException("Professor já possui agenda nesse período.");

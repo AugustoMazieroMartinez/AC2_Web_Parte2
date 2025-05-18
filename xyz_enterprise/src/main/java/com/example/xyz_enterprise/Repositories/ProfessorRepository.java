@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ProfessorRepository extends JpaRepository<Professor, Integer> {
-    // Busca professores por especialização (curso)
     @Query("SELECT p FROM Professor p JOIN p.especializacoes c WHERE c.id = :cursoId")
     List<Professor> findByEspecializacao(Integer cursoId);
 }

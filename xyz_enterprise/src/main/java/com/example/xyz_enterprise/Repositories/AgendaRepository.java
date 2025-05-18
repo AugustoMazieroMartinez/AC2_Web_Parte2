@@ -9,8 +9,6 @@ import java.util.List;
 public interface AgendaRepository extends JpaRepository<Agenda, Integer> {
     List<Agenda> findByProfessorId(Integer professorId);
     List<Agenda> findByCursoId(Integer cursoId);
-
-    // Verifica se o professor está livre em determinado período
     @Query("SELECT a FROM Agenda a WHERE a.professor.id = :professorId AND " +
            "((a.dataInicio <= :dataFim AND a.dataFim >= :dataInicio))")
     List<Agenda> findProfessorLivre(Integer professorId, LocalDate dataInicio, LocalDate dataFim);
