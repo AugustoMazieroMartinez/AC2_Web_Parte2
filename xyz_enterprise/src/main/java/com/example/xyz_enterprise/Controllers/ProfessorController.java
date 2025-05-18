@@ -1,9 +1,8 @@
-package com.example.xyz_enterprise.Controllers;
+package com.example.xyz_enterprise.controllers;
 
-import com.example.xyz_enterprise.Models.Professor;
-import com.example.xyz_enterprise.Models.Agenda;
-import com.example.xyz_enterprise.Services.ProfessorService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.xyz_enterprise.models.Professor;
+import com.example.xyz_enterprise.services.ProfessorService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,21 +11,42 @@ import java.util.List;
 @RequestMapping("/professores")
 public class ProfessorController {
 
-    @Autowired
-    private ProfessorService professorService;
+    private final ProfessorService professorService;
 
-    @GetMapping
-    public List<Professor> listarProfessores() {
-        return professorService.listarTodos();
+    public ProfessorController(ProfessorService professorService) {
+        this.professorService = professorService;
     }
 
-    @GetMapping("/{id}/agendas")
-    public List<Agenda> listarAgendasPorProfessor(@PathVariable int id) {
-        return professorService.listarAgendasPorProfessor(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<Professor> findById(@PathVariable Integer id) {
+        return professorService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping
+    public List<Professor> findAll() {
+        return professorService.findAll();
     }
 
     @PostMapping
-    public Professor cadastrarProfessor(@RequestBody Professor professor) {
-        return professorService.cadastrarProfessor(professor);
+    public Professor save(@RequestBody Professor professor) {
+        return professorService.save(professor);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Integer id) {
+        professorService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Professor> putById(@PathVariable Integer id, @RequestBody Professor professor) {
+        return ResponseEntity.ok(professorService.putById(id, professor));
+    }
+
+    @GetMapping("/especializacao/{cursoId}")
+    public List<Professor> findByEspecializacao(@PathVariable Integer cursoId) {
+        return professorService.findByEspecializacao(cursoId);
     }
 }

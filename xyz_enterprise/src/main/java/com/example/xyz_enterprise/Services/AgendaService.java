@@ -1,31 +1,18 @@
-package com.example.xyz_enterprise.Services;
+package com.example.xyz_enterprise.services;
 
-import com.example.xyz_enterprise.Models.Agenda;
-import com.example.xyz_enterprise.Repositories.AgendaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import com.example.xyz_enterprise.models.Agenda;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
-@Service
-public class AgendaService {
+public interface AgendaService {
+    Optional<Agenda> findById(Integer id);
+    List<Agenda> findAll();
+    Agenda save(Agenda agenda);
+    void deleteById(Integer id);
+    Agenda putById(Integer id, Agenda agenda);
 
-    @Autowired
-    private AgendaRepository agendaRepository;
-
-    public List<Agenda> listarTodas() {
-        return agendaRepository.findAll();
-    }
-
-    public Agenda cadastrarAgenda(Agenda agenda) {
-        // Validações de conflito e especialização podem ser adicionadas aqui
-        return agendaRepository.save(agenda);
-    }
-
-    public Agenda atualizarResumo(int agendaId, String resumo) {
-        Agenda agenda = agendaRepository.findById(agendaId)
-                .orElseThrow(() -> new IllegalArgumentException("Agenda não encontrada."));
-        agenda.setResumo(resumo);
-        return agendaRepository.save(agenda);
-    }
+    List<Agenda> findByProfessorId(Integer professorId);
+    List<Agenda> findProfessorLivre(Integer professorId, LocalDate dataInicio, LocalDate dataFim);
+    List<Agenda> findByCursoId(Integer cursoId);
 }

@@ -1,28 +1,13 @@
-package com.example.xyz_enterprise.Services;
+package com.example.xyz_enterprise.services;
 
-import com.example.xyz_enterprise.Models.Curso;
-import com.example.xyz_enterprise.Models.Professor;
-import com.example.xyz_enterprise.Repositories.CursoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import com.example.xyz_enterprise.models.Curso;
 import java.util.List;
+import java.util.Optional;
 
-@Service
-public class CursoService {
-
-    @Autowired
-    private CursoRepository cursoRepository;
-
-    public List<Curso> listarTodos() {
-        return cursoRepository.findAll();
-    }
-
-    public List<Professor> listarProfessoresPorCurso(int cursoId) {
-        return cursoRepository.findProfessoresByCurso(cursoId);
-    }
-
-    public Curso cadastrarCurso(Curso curso) {
-        return cursoRepository.save(curso);
-    }
+public interface CursoService {
+    Optional<Curso> findById(Integer id);
+    List<Curso> findAll();
+    Curso save(Curso curso);
+    void deleteById(Integer id);
+    Curso putById(Integer id, Curso curso);
 }

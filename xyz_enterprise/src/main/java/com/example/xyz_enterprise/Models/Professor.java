@@ -1,31 +1,27 @@
-package com.example.xyz_enterprise.Models;
+package com.example.xyz_enterprise.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
 @Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Professor {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String nome;
-
     private String cpf;
-
     private String rg;
-
     private String endereco;
-
     private String celular;
-
-    @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL)
-    private List<Agenda> agendas;
 
     @ManyToMany
     @JoinTable(
@@ -34,4 +30,8 @@ public class Professor {
         inverseJoinColumns = @JoinColumn(name = "curso_id")
     )
     private List<Curso> especializacoes;
+
+    @OneToMany(mappedBy = "professor")
+    @JsonIgnore
+    private List<Agenda> agendas;
 }

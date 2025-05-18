@@ -1,42 +1,41 @@
-package com.example.xyz_enterprise.Models;
+package com.example.xyz_enterprise.models;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import jakarta.persistence.*;
-import lombok.*;
 
 @Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Agenda {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "curso_id", nullable = false)
+    @JoinColumn(name = "curso_id")
     private Curso curso;
 
-    @ManyToOne
-    @JoinColumn(name = "professor_id", nullable = false)
-    private Professor professor;
-
     private LocalDate dataInicio;
-
     private LocalDate dataFim;
 
+    @Column(columnDefinition = "TIME")
     private LocalTime horarioInicio;
 
+    @Column(columnDefinition = "TIME")
     private LocalTime horarioFim;
 
+    @ManyToOne
+    @JoinColumn(name = "professor_id")
+    private Professor professor;
+
     private String cidade;
-
     private String estado;
-
     private String cep;
-
-    @Column(length = 500)
     private String resumo;
 }

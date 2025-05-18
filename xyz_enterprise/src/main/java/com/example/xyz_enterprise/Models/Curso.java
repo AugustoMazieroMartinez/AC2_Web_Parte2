@@ -1,32 +1,32 @@
-package com.example.xyz_enterprise.Models;
+package com.example.xyz_enterprise.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
 @Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Curso {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String descricao;
-
     private int cargaHoraria;
-
-    @Column(length = 1000)
     private String objetivos;
-
-    @Column(length = 2000)
     private String ementa;
 
-    @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL)
-    private List<Agenda> agendas;
-
     @ManyToMany(mappedBy = "especializacoes")
+    @JsonIgnore
     private List<Professor> professores;
+
+    @OneToMany(mappedBy = "curso")
+    @JsonIgnore
+    private List<Agenda> agendas;
 }
